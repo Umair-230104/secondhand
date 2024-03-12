@@ -1,9 +1,12 @@
 package app;
 
 import app.config.ThymeleafConfig;
+import app.controllers.ItemOverviewController;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.controllers.UserController;
+
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,6 +25,13 @@ public class Main {
             UserController.login(ctx);
         });
 
-        app.get("/welcome.html", ctx -> ctx.render("/welcome.html"));
+        app.get("/welcome", ctx ->
+        {
+            var items = ItemOverviewController.loadItems(ctx);
+            ctx.render("/welcome.html", Map.of("items", items));
+        });
+
+
+
     }
 }
